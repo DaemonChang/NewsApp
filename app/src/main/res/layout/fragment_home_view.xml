@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_home_pages"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </android.support.v4.view.ViewPager>
+
+    <RadioGroup
+        android:id="@+id/rg_content_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:background="@drawable/bottom_tab_bg">
+       <RadioButton
+           android:id="@+id/rb_content_head"
+           style="@style/homeRadioButtonStyle"
+           android:textColor="@color/rb_text_color"
+           android:drawableTop="@drawable/rb_head_selector"
+           android:text="@string/rb_home_fragment_one"/>
+        <RadioButton
+            android:id="@+id/rb_content_news"
+            style="@style/homeRadioButtonStyle"
+            android:drawableTop="@drawable/rb_news_selector"
+            android:text="@string/rb_home_fragment_two"/>
+        <RadioButton
+            android:id="@+id/rb_content_service"
+            style="@style/homeRadioButtonStyle"
+            android:drawableTop="@drawable/rb_service_selector"
+            android:text="@string/rb_home_fragment_three"/>
+        <RadioButton
+            android:id="@+id/rb_content_govaffair"
+            style="@style/homeRadioButtonStyle"
+            android:drawableTop="@drawable/rb_affairs_selector"
+            android:text="@string/rb_home_fragment_four"/>
+        <RadioButton
+            android:id="@+id/rb_content_setting"
+            style="@style/homeRadioButtonStyle"
+            android:drawableTop="@drawable/rb_setting_selector"
+            android:text="@string/rb_home_fragment_five"/>
+
+    </RadioGroup>
+
+</LinearLayout>

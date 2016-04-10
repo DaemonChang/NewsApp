@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">NewsApp</string>
+    <string name="guide_welcome">开始体验</string>
+    <string name="rb_home_fragment_one">首页</string>
+    <string name="rb_home_fragment_two">新闻</string>
+    <string name="rb_home_fragment_three">服务</string>
+    <string name="rb_home_fragment_four">政务</string>
+    <string name="rb_home_fragment_five">设置</string>
+</resources>
