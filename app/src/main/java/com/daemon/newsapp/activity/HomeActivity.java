@@ -1,6 +1,7 @@
 package com.daemon.newsapp.activity;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -46,11 +47,30 @@ public class HomeActivity extends SlidingFragmentActivity {
         SlidingMenu sm = getSlidingMenu();
         sm.setMode(SlidingMenu.LEFT);
 
-        //设置触动模式--左边缘
-        sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+        //在HomeMenuFragment处按需设置了，因此此处取消设置
+        //设置触动模式-
+        //sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);//修复：初次安装，首页能滑动左侧菜单
 
         //设置 侧滑后 主页面剩余的像素宽度
         sm.setBehindOffset(300);
 
+    }
+    /**
+     * @return 返回主页面的Fragment
+     */
+    public HomeMenuFragment getHomeMenuFragment(){
+        FragmentManager fm = getSupportFragmentManager();
+        HomeMenuFragment homeMenuFragment = (HomeMenuFragment) fm.findFragmentByTag(HOME_MENU_TAG);
+        return  homeMenuFragment;
+    }
+
+    /**
+     * @return 返回左侧菜单的Fragment
+     */
+    public LeftMenuFragment getLeftMenuFragment(){
+        FragmentManager fm = getSupportFragmentManager();
+        LeftMenuFragment leftMenuFragment = (LeftMenuFragment) fm.findFragmentByTag(LEFT_MENU_TAG);
+        return  leftMenuFragment;
     }
 }

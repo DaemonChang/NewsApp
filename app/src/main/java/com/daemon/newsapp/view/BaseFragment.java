@@ -18,13 +18,13 @@ import com.daemon.newsapp.activity.HomeActivity;
  *主界面 和 侧滑 界面的 基类
  */
 public abstract class BaseFragment extends Fragment {
-    protected HomeActivity currentActivity;//fragment所在的上下文
+    protected HomeActivity mainActivity;//fragment所在的Activity
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        currentActivity = (HomeActivity) getActivity();//获取上下文
+        mainActivity = (HomeActivity) getActivity();//获取HomeAvtivity
 
     }
 
