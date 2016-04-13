@@ -76,6 +76,17 @@ public class HomeMenuFragment extends BaseFragment {
     }
 
     /**
+     * 左侧菜单点击时，让主界面切换到对应的页面
+     */
+    public void leftMenuClickSwitchPage(int subSelectIndex){
+        //获取到选中的主菜单页面
+        BaseTagPager baseTagPager = pagers.get(selectIndex);
+        //在该主菜单页面上，显示对应的左侧菜单栏所指定的页面
+        baseTagPager.switchNewsPage(subSelectIndex);
+
+    }
+
+    /**
      * 显示选用的按钮所对应的页面
      */
     private void switchPage() {

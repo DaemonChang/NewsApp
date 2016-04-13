@@ -3,12 +3,13 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:drawableLeft="@drawable/tv_leftmenutile_icon_selector"
-          android:textColor="@color/rb_text_color"
+          android:textColor="@color/leftmenu_list_text_color"
           android:textSize="20sp"
           android:drawablePadding="15dp"
           android:paddingTop="15dp"
           android:paddingBottom="15dp"
           android:paddingLeft="10dp"
+          android:enabled="false"
 
     >
 

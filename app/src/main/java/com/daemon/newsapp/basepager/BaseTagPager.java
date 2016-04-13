@@ -83,4 +83,8 @@ public class BaseTagPager {
     public View getRoot(){
         return  root ;
     }
+
+    public void switchNewsPage(int position){
+
+    }
 }

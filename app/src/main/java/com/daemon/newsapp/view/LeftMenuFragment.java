@@ -1,9 +1,11 @@
 package com.daemon.newsapp.view;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,9 +20,53 @@ import java.util.List;
  * Created by Chang on 04/10/16.
  */
 public class LeftMenuFragment extends BaseFragment {
+//--------------定义一个监听接口，给别的类实现该接口来传递主页面选中的页面------
+    public interface OnSwitchPageListener{
+        void switchPage(int selectIndex);
+    }
+
+    private OnSwitchPageListener switchPageListener;
+
+    public void setOnSwitchPageListener(OnSwitchPageListener listener){
+        this.switchPageListener = listener;
+    }
+//------------此功能可代替 mainActivity.getHomeMenuFragment().leftMenuClickSwitchPage(selectPosition);----
+
+
     private List<NewsData> data = new ArrayList<>();//新闻中心的左侧菜单数据
     private ListView lv_leftMenuData;
     private MyAdapter mAdapter;
+
+    private int selectPosition;//选中的位置
+
+    @Override
+    public void initEvent() {
+       lv_leftMenuData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           @Override
+           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               //保存选中的位置信息
+               selectPosition = position;
+               //刷新页面
+               mAdapter.notifyDataSetChanged();
+               //方法1：控制主菜单选中的页面的 左侧栏中的 所选中的标签 所对应的页面的显示
+                mainActivity.getHomeMenuFragment().leftMenuClickSwitchPage(selectPosition);
+                //方法2：
+           /*    if(switchPageListener != null) {
+                   Log.d("@@swtichpage:" , "swtichPageListener.switchPage()");
+                   switchPageListener.switchPage(selectPosition);
+               }else{
+                   Log.d("@@swtichpage:" , "mainActivity.getHomeMenuFragment()");
+                   mainActivity.getHomeMenuFragment().leftMenuClickSwitchPage(selectPosition);
+               }*/
+
+               //左菜单栏收回
+               mainActivity.getSlidingMenu().toggle();
+           }
+       });
+
+
+        super.initEvent();
+    }
 
     @Override
     public View initView() {
@@ -79,6 +125,9 @@ public class LeftMenuFragment extends BaseFragment {
             }
             //设置左菜单栏标题数据
             tv_leftTitle.setText(data.get(position).title);
+
+            //设置选中与否 的状态
+            tv_leftTitle.setEnabled(position == selectPosition);
             return tv_leftTitle;
         }
     }

@@ -10,26 +10,26 @@ public class NewsCenterData {
     public int retcode;
     public List<NewsData> data;
 
-     public class NewsData{
+        public class NewsData{
             public List<ViewTagData> children ;
-             /**
-              * 新闻中心上方页签的数据
-              */
-            public class ViewTagData{
-                 public String id;
-                 public String title;
-                 public int type;
-                 public String url	;
-            }
-         public String id;
-         public String title;
-         public  int type;
-         public String url	;
-         public String url1	;
+                 /**
+                  * 新闻中心上方页签的数据
+                  */
+                 public class ViewTagData{
+                     public String id;
+                     public String title;
+                     public int type;
+                     public String url	;
+                }
+            public String id;
+            public String title;
+            public  int type;
+            public String url	;
+            public String url1	;
 
-         public String dayurl;
-         public String  excurl;
-         public String  weekurl;
+            public String dayurl;
+            public String  excurl;
+            public String  weekurl;
 
 
     }
