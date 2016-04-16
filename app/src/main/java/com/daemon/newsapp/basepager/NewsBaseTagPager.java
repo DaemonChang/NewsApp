@@ -1,8 +1,10 @@
 package com.daemon.newsapp.basepager;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 
 import com.daemon.newsapp.activity.HomeActivity;
@@ -13,6 +15,7 @@ import com.daemon.newsapp.newscenterbasepage.NewsNewsBasePage;
 import com.daemon.newsapp.newscenterbasepage.PhotosNewsBasePage;
 import com.daemon.newsapp.newscenterbasepage.SpecialNewsBasePage;
 import com.daemon.newsapp.utils.MyConstants;
+import com.daemon.newsapp.utils.SpTools;
 import com.daemon.newsapp.view.LeftMenuFragment;
 import com.google.gson.Gson;
 import com.lidroid.xutils.HttpUtils;
@@ -20,6 +23,7 @@ import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,32 +35,51 @@ public class NewsBaseTagPager extends BaseTagPager {
     //新闻中心要显示的四个栏目对应页面的容器
     private List<NewsBasePage> newsBasePages = new ArrayList<>();
     private NewsCenterData newsCenterData;
+    private Gson gson;
+
 
     public NewsBaseTagPager(HomeActivity homeActivity) {
         super(homeActivity);
+
     }
     @Override
     public void initData() {
-        //第一步：访问网络数据
-        HttpUtils httpUtils = new HttpUtils();
-        //6.0开始要在build.gradle的android中声明 useLibrary 'org.apache.http.legacy'
-        httpUtils.send(HttpRequest.HttpMethod.GET, MyConstants.NEWSCENTERRL,
-                new RequestCallBack<Object>() {
-                    @Override
-                    public void onSuccess(ResponseInfo<Object> responseInfo) {
-                      String jsonData = (String) responseInfo.result;
+            //第一步：访问网络数据
+            HttpUtils httpUtils = new HttpUtils();
+            //6.0开始要在build.gradle的android中声明 useLibrary 'org.apache.http.legacy'
+            httpUtils.send(HttpRequest.HttpMethod.GET, MyConstants.NEWSCENTERURL,
+                    new RequestCallBack<Object>() {
+                        @Override
+                        public void onStart() {
+                            //第0步，访问本地缓存数据
+                            String jsonCache = SpTools.getString(homeActivity,MyConstants.NEWSCENTERURL,"");
+                            if(!TextUtils.isEmpty(jsonCache)){
+                                //Log.d("@@jsonCache::",jsonCache);
+                                 //若缓存不为空
+                                parseData(SpTools.getString(homeActivity,MyConstants.NEWSCENTERURL,""));
+                            }
+                            super.onStart();
+                        }
 
-                       // Log.d("@@json:",jsonData);
-                        //第二步：解析json数据
-                        parseData(jsonData);
+                        @Override
+                        public void onSuccess(ResponseInfo<Object> responseInfo) {
+                            String jsonData = (String) responseInfo.result;
 
-                    }
+                            //保存一份于本地 作为缓存
+                            SpTools.setString(homeActivity, MyConstants.NEWSCENTERURL, jsonData);
 
-                    @Override
-                    public void onFailure(HttpException error, String msg) {
+                            // Log.d("@@json:",jsonData);
+                            //第二步：解析json数据
+                            parseData(jsonData);
 
-                    }
-                });
+                        }
+
+                        @Override
+                        public void onFailure(HttpException error, String msg) {
+//                             parseData(SpTools.getString(homeActivity,MyConstants.NEWSCENTERRL,""));
+
+                        }
+                    });
 
 
 
@@ -69,10 +92,11 @@ public class NewsBaseTagPager extends BaseTagPager {
      */
     private void parseData(String jsonData) {
         //google提供的开源解释json工具
-        Gson gson = new Gson();
+        if(gson == null)
+          gson = new Gson();
         //按NewsCenterData格式解释数据
         newsCenterData = gson.fromJson(jsonData, NewsCenterData.class);
-       // String title = newsCenterData.data.get(0).children.get(0).title;
+        String title = newsCenterData.data.get(0).children.get(0).title;
         //Log.d("@@json: title",title); //北京
 
         //给左侧菜单栏LeftMenuFragment传递数据
@@ -93,7 +117,7 @@ public class NewsBaseTagPager extends BaseTagPager {
             NewsBasePage newsBasePage = null;//基类的引用
             switch (newsData.type){
                 case 1://新闻页面
-                    newsBasePage = new NewsNewsBasePage(homeActivity);
+                    newsBasePage = new NewsNewsBasePage(homeActivity,newsCenterData.data.get(0).children);
                     break;
                 case 10://专题页面
                     newsBasePage = new SpecialNewsBasePage(homeActivity);
@@ -124,6 +148,9 @@ public class NewsBaseTagPager extends BaseTagPager {
         tv_title.setText(newsCenterData.data.get(position).title);
         //擦干净白纸（清理上次显示的页面）
         fl_newsContent.removeAllViews();
+
+        //初始化数据
+        newsBasePage.initData();
         //替换白纸，显示对应页面的根布局
         fl_newsContent.addView(newsBasePage.getRoot());
     }

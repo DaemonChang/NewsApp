@@ -33,4 +33,17 @@ public class SpTools {
                 MyConstants.CONFIG_FILE,Context.MODE_PRIVATE);
          return sp.getBoolean(key ,deValue);
     }
+
+    public static void setString(Context context , String key , String value){
+        SharedPreferences sp =  context.getSharedPreferences(
+                MyConstants.CONFIG_FILE,Context.MODE_PRIVATE);
+        sp.edit().putString(key,value).commit();//提交，保存数据
+
+    }
+
+    public static String getString(Context context, String key , String deValue){
+        SharedPreferences sp =  context.getSharedPreferences(
+                MyConstants.CONFIG_FILE,Context.MODE_PRIVATE);
+        return sp.getString(key ,deValue);
+    }
 }

@@ -17,7 +17,8 @@
         </activity>
         <activity android:name=".activity.GuideActivity">
         </activity>
-        <activity android:name=".activity.HomeActivity">
+        <activity android:name=".activity.HomeActivity"
+            android:theme="@style/Theme.PageIndicatorDefaults_edit">
         </activity>
     </application>
 

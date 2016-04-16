@@ -1,6 +1,7 @@
 package com.daemon.newsapp.view;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 public class LeftMenuFragment extends BaseFragment {
 //--------------定义一个监听接口，给别的类实现该接口来传递主页面选中的页面------
-    public interface OnSwitchPageListener{
+   /* public interface OnSwitchPageListener{
         void switchPage(int selectIndex);
     }
 
@@ -29,7 +30,7 @@ public class LeftMenuFragment extends BaseFragment {
 
     public void setOnSwitchPageListener(OnSwitchPageListener listener){
         this.switchPageListener = listener;
-    }
+    }*/
 //------------此功能可代替 mainActivity.getHomeMenuFragment().leftMenuClickSwitchPage(selectPosition);----
 
 
@@ -38,6 +39,8 @@ public class LeftMenuFragment extends BaseFragment {
     private MyAdapter mAdapter;
 
     private int selectPosition;//选中的位置
+
+
 
     @Override
     public void initEvent() {
@@ -72,29 +75,28 @@ public class LeftMenuFragment extends BaseFragment {
     public View initView() {
        //创建ListView，用于显示左侧菜单栏的栏目名
         lv_leftMenuData = new ListView(mainActivity);
+        //设置选中时的颜色才透明色
+        lv_leftMenuData.setSelector(new ColorDrawable(Color.TRANSPARENT));
+
         //设置item拖动时的背景色为透明色，因为在低版本中，可全选item，会有颜色覆盖
         lv_leftMenuData.setCacheColorHint(Color.TRANSPARENT);
         //去掉item间的分割线
         lv_leftMenuData.setDividerHeight(0);
         //设置listview顶部padding为50px
         lv_leftMenuData.setPadding(0,40,0,0);
+        Log.i("lv",lv_leftMenuData.toString());
         return lv_leftMenuData;
     }
 
-    /**由其他类来调用此方法，传递所解析到的json数据，用于左侧菜单的内容显示
-     * 获取左侧菜单栏数据
-     * @param data 通过GSON解释json所得到的data数据
-     */
-    public void setLeftMenuData(List<NewsData> data){
-        this.data = data;
-        mAdapter.notifyDataSetChanged();//设置好数据后，通知界面更新数据，显示
-    }
+
     @Override
     public void initData() {
+        super.initData();
+
         //组织数据
         mAdapter = new MyAdapter();
+        Log.d("@@mAdapter::",mAdapter+"");
         lv_leftMenuData.setAdapter(mAdapter);
-        super.initData();
     }
 
     class MyAdapter extends BaseAdapter{
@@ -130,5 +132,13 @@ public class LeftMenuFragment extends BaseFragment {
             tv_leftTitle.setEnabled(position == selectPosition);
             return tv_leftTitle;
         }
+    }
+    /**由其他类来调用此方法，传递所解析到的json数据，用于左侧菜单的内容显示
+     * 获取左侧菜单栏数据
+     * @param data 通过GSON解释json所得到的data数据
+     */
+    public void setLeftMenuData(List<NewsData> data){
+        this.data = data;
+        mAdapter.notifyDataSetChanged();//设置好数据后，通知界面更新数据，显示
     }
 }

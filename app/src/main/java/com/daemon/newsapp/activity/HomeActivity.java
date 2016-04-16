@@ -16,6 +16,8 @@ public class HomeActivity extends SlidingFragmentActivity {
 
     private static final String LEFT_MENU_TAG = "leftMenuTag";
     private static final String HOME_MENU_TAG = "homeMenuTag";
+    private LeftMenuFragment mLeftMenuFragment;
+    private HomeMenuFragment mHomeMenuFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,8 +32,11 @@ public class HomeActivity extends SlidingFragmentActivity {
         //获得事务
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         //完成替换:左侧 和 主
-        transaction.replace(R.id.fl_left_menu_activity,new LeftMenuFragment(),LEFT_MENU_TAG);
-        transaction.replace(R.id.fl_home_menu_activity,new HomeMenuFragment(),HOME_MENU_TAG);
+        mLeftMenuFragment = new LeftMenuFragment();
+        mHomeMenuFragment = new HomeMenuFragment();
+        transaction.replace(R.id.fl_home_menu_activity,mHomeMenuFragment,HOME_MENU_TAG);
+        transaction.replace(R.id.fl_left_menu_activity,mLeftMenuFragment,LEFT_MENU_TAG);
+
 
         //提交事务
         transaction.commit();
@@ -61,7 +66,7 @@ public class HomeActivity extends SlidingFragmentActivity {
      */
     public HomeMenuFragment getHomeMenuFragment(){
         FragmentManager fm = getSupportFragmentManager();
-        HomeMenuFragment homeMenuFragment = (HomeMenuFragment) fm.findFragmentByTag(HOME_MENU_TAG);
+        HomeMenuFragment homeMenuFragment =(HomeMenuFragment) fm.findFragmentByTag(HOME_MENU_TAG);
         return  homeMenuFragment;
     }
 
